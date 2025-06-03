@@ -1,8 +1,8 @@
+#include <ArduinoJson.h>
 
 #define TRIG_PIN 7
 #define ECHO_PIN 6
 #define LED_PIN 2
-
 void setup() {
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
@@ -14,26 +14,19 @@ void loop() {
   float duration;
   float distance;
 
-  // Pulso no TRIG
   digitalWrite(TRIG_PIN, LOW);
   delayMicroseconds(2);
   digitalWrite(TRIG_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG_PIN, LOW);
-
   duration = pulseIn(ECHO_PIN, HIGH);
   distance = duration * 0.034 / 2;
 
-  Serial.print("Distância: ");
-  Serial.print(distance);
-  Serial.println(" cm");
+  StaticJsonDocument<100> doc;
+  doc["distancia"] = distance;
 
-  if (distance < 10) { 
-    digitalWrite(LED_PIN, HIGH);
-    Serial.println("Test");
-  } else {
-    digitalWrite(LED_PIN, LOW);
-  }
+  serializeJson(doc, Serial);
+  Serial.println();
 
   delay(500);
 }
