@@ -27,6 +27,10 @@ void loop() {
 
   serializeJson(doc, Serial);
   Serial.println();
-
+  if (distance <= 10){
+    digital.write(LED_PIN,HIGH);
+  }else{
+    digital.write(LED_PIN,LOW);
+  }
   delay(500);
 }
